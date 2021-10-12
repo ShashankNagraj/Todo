@@ -17,13 +17,14 @@
         </li>
       </ul>
     </div>
+    <div :events="events" @event-updated="fetchdata">{{events}}</div>
   </div>
 </template>
  
 <script>
 import Scheduler from "./components/Scheduler.vue";
-// import axios from "axios";
-// import { scheduler } from 'dhtmlx-scheduler';
+import axios from "axios";
+
 
 export default {
   name: "app",
@@ -34,45 +35,18 @@ export default {
       messages: [],
     };
   },
-//   created() {
-//     this.fetchdata();
-// },
+  mounted() {
+    this.fetchdata();
+},
 methods: {
 
-
-// let res = await axios.get('http://localhost:8081/todo');
-    //   // let val = res.data[0];
-    //   // console.log(res.data)
-    //   // const val1={
-    //   //    'id':val.id,
-    //   //    'start_date':val.start_date,
-    //   //     'end_date':val.end_date,
-    //   //     "text" : val.text
-    //   //   }
-    //   // this.events.push(val1)
-    //   // console.log(this.events)
-    //   // scheduler.addEvent(val1);
-
-
-
-    // fetchdata(){
-     
-    //   axios.get("http://localhost:8081/todo")
-    //   .then((response) => {
-    //     console.log(response.data);
-    //     const dataValue = response.data;
-    //     const event = []
-    //     for(const data in dataValue){
-    //     event.push({
-    //     id:data.id,
-    //     start_date:data.start_date,
-  	//     end_date:data.end_date,
-    //     text:data.text});
-    //     }
-    //     this.events=event;
-    //     console.log(this.events)
-    //   })
-    // },
+    async fetchdata(){
+      let res = await axios.get('http://localhost:8081/todo');
+      const data = res.data;
+      data.forEach(event => {
+        this.events.push(event)
+      });
+    },
     addMessage(message) {
       this.messages.unshift(message);
       if (this.messages.length > 40) {
